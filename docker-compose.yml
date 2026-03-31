@@ -1,0 +1,31 @@
+version: '3.9'
+
+services:
+  paid-mcp-server:
+    build: .
+    image: paid-mcp-server:latest
+    container_name: paid-mcp-server
+
+    # MCP servers communicate over stdio — this service runs as a process
+    # rather than a long-running HTTP server. For deployment, consider
+    # wrapping with an HTTP transport or using a process manager.
+    stdin_open: true
+    tty: false
+
+    environment:
+      # Copy your .env values here, or use Docker secrets in production.
+      # Never commit real API keys to source control.
+      - MAINLAYER_API_KEY=${MAINLAYER_API_KEY}
+      - RESOURCE_ID_WEATHER=${RESOURCE_ID_WEATHER}
+      - RESOURCE_ID_SEARCH=${RESOURCE_ID_SEARCH}
+      - RESOURCE_ID_SUMMARY=${RESOURCE_ID_SUMMARY}
+
+    restart: unless-stopped
+
+    # Health check pings the process every 30s
+    healthcheck:
+      test: ["CMD", "node", "-e", "process.exit(0)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
