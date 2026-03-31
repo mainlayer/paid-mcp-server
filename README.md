@@ -1,32 +1,45 @@
 # paid-mcp-server
 
-A production-ready template for building MCP servers where each tool call requires payment via [Mainlayer](https://mainlayer.fr).
+A production-ready MCP server template where each tool call requires payment via [Mainlayer](https://mainlayer.fr) — payment infrastructure for AI agents.
 
 Use this as the starting point for monetizing your MCP tools. Every tool call passes through a payment gate — if the caller hasn't paid, they receive clear instructions on how to do so.
+
+**High-virality template**: Perfect for AI marketplaces, prompt shops, and tool marketplaces where every API call is monetized.
 
 ---
 
 ## What this template does
 
-AI agents use MCP servers to access tools. This template shows you how to **monetize those tools** using Mainlayer — payment infrastructure for AI agents.
+AI agents use MCP servers to access tools. This template shows you how to **monetize those tools** using Mainlayer.
 
 The flow:
 
-1. An agent calls a tool (e.g. `weather_current`) and provides their `payer_wallet`.
+1. An agent calls a tool (e.g. `search_web`) and provides their `payer_wallet`.
 2. The server checks for a valid Mainlayer entitlement before running any logic.
-3. If the agent hasn't paid: they receive a structured error with the price and payment endpoint.
-4. The agent pays via Mainlayer, then retries the tool call.
-5. The tool executes and returns its result.
+3. If not paid: agent receives a structured error with price and payment instructions.
+4. Agent pays via Mainlayer, then retries the same tool call.
+5. Tool executes and returns its result.
 
-This template includes three demo tools:
+This template includes 6 tools (4 paid, 2 free):
+
+**Paid Tools**
 
 | Tool | Description | Price |
 |------|-------------|-------|
-| `weather_current` | Current weather for a city | $0.001/call |
-| `web_search` | Web search with structured results | $0.005/call |
-| `ai_summary` | Summarize text with AI | $0.01/call |
+| `search_web` | Web search with structured results | $0.01/call |
+| `analyze_code` | Analyze source code for issues | $0.05/analysis |
+| `generate_image_prompt` | Generate optimized image generation prompts | $0.02/call |
+| `summarize_url` | Summarize web content from URL | $0.03/call |
 
-All three are clearly labeled as demos with mocked data. Replace the implementation functions with real API calls and they're production-ready.
+**Free Tools** (always available)
+
+| Tool | Description |
+|------|-------------|
+| `hello` | Greeting endpoint (free demo) |
+| `get_time` | Current server time (free demo) |
+| `echo` | Echo tool for testing |
+
+All demo tools use mocked data — replace implementations with real API calls for production.
 
 ---
 
@@ -90,7 +103,11 @@ The server runs over stdio, which is the standard MCP transport.
 
 ## Connecting to Claude Desktop
 
-Add this to your Claude Desktop config (`~/Library/Application Support/Claude/claude_desktop_config.json` on macOS):
+This server works as an MCP server for Claude Desktop. Add it to your config:
+
+**macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+**Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
+**Linux**: `~/.config/Claude/claude_desktop_config.json`
 
 ```json
 {
@@ -100,16 +117,49 @@ Add this to your Claude Desktop config (`~/Library/Application Support/Claude/cl
       "args": ["/absolute/path/to/paid-mcp-server/dist/index.js"],
       "env": {
         "MAINLAYER_API_KEY": "ml_your_api_key_here",
-        "RESOURCE_ID_WEATHER": "res_xxxxxxxxxxxx",
-        "RESOURCE_ID_SEARCH": "res_xxxxxxxxxxxx",
-        "RESOURCE_ID_SUMMARY": "res_xxxxxxxxxxxx"
+        "RESOURCE_ID_SEARCH_WEB": "res_xxxxxxxxxxxx",
+        "RESOURCE_ID_ANALYZE_CODE": "res_xxxxxxxxxxxx",
+        "RESOURCE_ID_GENERATE_IMAGE_PROMPT": "res_xxxxxxxxxxxx",
+        "RESOURCE_ID_SUMMARIZE_URL": "res_xxxxxxxxxxxx"
       }
     }
   }
 }
 ```
 
-Restart Claude Desktop and the tools will appear.
+After restarting Claude Desktop, the tools will appear in the tool list. Free tools are always available; paid tools return a 402 error with payment instructions if not authorized.
+
+### Example: Claude asks to search the web
+
+Claude uses your payer wallet to call the tool:
+```
+Tool: search_web
+Arguments: { "payer_wallet": "wallet_abc123", "query": "Claude AI" }
+```
+
+If not paid:
+```
+Error (402):
+=== PAYMENT REQUIRED ===
+
+Tool: Web Search
+Price: 0.0100 USD per call
+Resource ID: res_search_web
+
+To pay, POST to: https://api.mainlayer.fr/payments
+Authorization: Bearer <your_mainlayer_api_key>
+Content-Type: application/json
+
+{
+  "resource_id": "res_search_web",
+  "payer_wallet": "wallet_abc123"
+}
+
+After payment, retry your original tool call.
+========================
+```
+
+Claude can handle this automatically or prompt you to pay.
 
 ---
 
@@ -264,14 +314,84 @@ paid-mcp-server/
 
 ---
 
-## Running with Docker
+## Deployment
+
+### Quick deployment to Railway
+
+Deploy in 2 minutes without writing deployment config:
 
 ```bash
-# Copy and fill in your .env
+# 1. Install Railway CLI
+npm install -g @railway/cli
+
+# 2. Login
+railway login
+
+# 3. Create project
+railway init
+
+# 4. Set environment variables
+railway variables set MAINLAYER_API_KEY=ml_your_key_here
+
+# 5. Deploy
+railway up
+```
+
+Visit your Railway project dashboard to see the deployed URL.
+
+### Quick deployment to Fly.io
+
+```bash
+# 1. Install and login
+curl -L https://fly.io/install.sh | sh
+flyctl auth login
+
+# 2. Launch new app
+flyctl launch --name my-paid-mcp-server
+
+# 3. Set secrets
+flyctl secrets set MAINLAYER_API_KEY=ml_your_key_here
+
+# 4. Deploy
+flyctl deploy
+```
+
+Your server will be live at `https://my-paid-mcp-server.fly.dev`.
+
+### Docker (local or self-hosted)
+
+```bash
+# 1. Copy and fill in your .env
 cp .env.example .env
 
-# Build and run
+# 2. Build and run
 docker-compose up --build
+
+# 3. Server runs on http://localhost:3000
+```
+
+### Manual VPS deployment
+
+```bash
+# On your VPS (Ubuntu/Debian):
+sudo apt-get update && sudo apt-get install -y nodejs npm
+
+# Clone repo and install
+git clone https://github.com/your-org/paid-mcp-server.git
+cd paid-mcp-server
+npm install
+
+# Set environment
+export MAINLAYER_API_KEY=ml_your_key_here
+npm run setup  # Register resources on Mainlayer
+
+# Build and run (with PM2 for background process)
+npm run build
+npm install -g pm2
+pm2 start dist/index.js --name "paid-mcp-server"
+pm2 startup && pm2 save
+
+# Server will automatically restart on reboot
 ```
 
 ---

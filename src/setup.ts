@@ -31,6 +31,7 @@ const MAINLAYER_API_BASE = 'https://api.mainlayer.fr';
 // ---------------------------------------------------------------------------
 
 const RESOURCES_TO_CREATE = [
+  // Paid tools for this MCP server
   {
     envKey: 'RESOURCE_ID_WEATHER',
     name: 'weather_current',
@@ -41,22 +42,40 @@ const RESOURCES_TO_CREATE = [
     category: 'data',
   },
   {
-    envKey: 'RESOURCE_ID_SEARCH',
-    name: 'web_search',
+    envKey: 'RESOURCE_ID_SEARCH_WEB',
+    name: 'search_web',
     displayName: 'Web Search',
     description: 'Search the web and receive structured results with titles, URLs, and snippets.',
-    price: 0.005,
+    price: 0.01,
     currency: 'USD',
     category: 'search',
   },
   {
-    envKey: 'RESOURCE_ID_SUMMARY',
-    name: 'ai_summary',
-    displayName: 'AI Text Summary',
-    description: 'Summarize text with AI. Supports brief, detailed, and bullet-point styles.',
-    price: 0.01,
+    envKey: 'RESOURCE_ID_ANALYZE_CODE',
+    name: 'analyze_code',
+    displayName: 'Code Analysis',
+    description: 'Analyze source code for security issues, performance problems, and best practice violations.',
+    price: 0.05,
+    currency: 'USD',
+    category: 'development',
+  },
+  {
+    envKey: 'RESOURCE_ID_GENERATE_IMAGE_PROMPT',
+    name: 'generate_image_prompt',
+    displayName: 'Image Prompt Generator',
+    description: 'Generate optimized prompts for image generation models (DALL-E, Midjourney, Stable Diffusion).',
+    price: 0.02,
     currency: 'USD',
     category: 'ai',
+  },
+  {
+    envKey: 'RESOURCE_ID_SUMMARIZE_URL',
+    name: 'summarize_url',
+    displayName: 'URL Summarizer',
+    description: 'Fetch and summarize content from a web URL with metadata and readability score.',
+    price: 0.03,
+    currency: 'USD',
+    category: 'content',
   },
 ] as const;
 
