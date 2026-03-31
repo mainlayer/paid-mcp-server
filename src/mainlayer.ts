@@ -15,7 +15,7 @@
 import axios, { AxiosError } from 'axios';
 import { McpError, ErrorCode } from '@modelcontextprotocol/sdk/types.js';
 
-const MAINLAYER_API_BASE = 'https://api.mainlayer.xyz';
+const MAINLAYER_API_BASE = 'https://api.mainlayer.fr';
 
 // ---------------------------------------------------------------------------
 // Types

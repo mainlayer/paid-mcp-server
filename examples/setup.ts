@@ -34,7 +34,7 @@ async function registerResourceManually() {
 
   // Create a resource on Mainlayer
   const { data: resource } = await axios.post(
-    'https://api.mainlayer.xyz/resources',
+    'https://api.mainlayer.fr/resources',
     {
       name: 'my_custom_tool',
       display_name: 'My Custom Tool',
@@ -65,7 +65,7 @@ async function registerResourceManually() {
 async function checkEntitlementManually(resourceId: string, payerWallet: string) {
   const apiKey = process.env.MAINLAYER_API_KEY!;
 
-  const { data } = await axios.get('https://api.mainlayer.xyz/entitlements/check', {
+  const { data } = await axios.get('https://api.mainlayer.fr/entitlements/check', {
     params: { resource_id: resourceId, payer_wallet: payerWallet },
     headers: { Authorization: `Bearer ${apiKey}` },
   });

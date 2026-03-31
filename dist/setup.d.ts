@@ -13,7 +13,7 @@
  *   npm run setup
  *
  * Prerequisites:
- *   - A Mainlayer account (https://mainlayer.xyz)
+ *   - A Mainlayer account (https://mainlayer.fr)
  *   - MAINLAYER_API_KEY set in .env
  */
 import 'dotenv/config';

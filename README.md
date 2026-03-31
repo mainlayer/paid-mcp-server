@@ -1,6 +1,6 @@
 # paid-mcp-server
 
-A production-ready template for building MCP servers where each tool call requires payment via [Mainlayer](https://mainlayer.xyz).
+A production-ready template for building MCP servers where each tool call requires payment via [Mainlayer](https://mainlayer.fr).
 
 Use this as the starting point for monetizing your MCP tools. Every tool call passes through a payment gate — if the caller hasn't paid, they receive clear instructions on how to do so.
 
@@ -33,7 +33,7 @@ All three are clearly labeled as demos with mocked data. Replace the implementat
 ## Prerequisites
 
 - [Node.js](https://nodejs.org/) 18 or later
-- A [Mainlayer account](https://mainlayer.xyz) with an API key
+- A [Mainlayer account](https://mainlayer.fr) with an API key
 
 ---
 
@@ -59,7 +59,7 @@ Open `.env` and set your Mainlayer API key:
 MAINLAYER_API_KEY=ml_your_api_key_here
 ```
 
-Get your API key from the [Mainlayer dashboard](https://mainlayer.xyz/dashboard).
+Get your API key from the [Mainlayer dashboard](https://dashboard.mainlayer.fr).
 
 ### 3. Register your tools on Mainlayer
 
@@ -124,7 +124,7 @@ Tool: Current Weather
 Price: 0.0010 USD per call
 Resource ID: res_xxxxxxxxxxxx
 
-To pay, POST to: https://api.mainlayer.xyz/payments
+To pay, POST to: https://api.mainlayer.fr/payments
 Authorization: Bearer <your_mainlayer_api_key>
 Content-Type: application/json
 
@@ -300,7 +300,7 @@ npm run build
 | $0.01 | AI inference, complex computations |
 | $0.05+ | Premium operations (image generation, video) |
 
-You can update prices at any time in the [Mainlayer dashboard](https://mainlayer.xyz/dashboard). Existing entitlements remain valid until they expire.
+You can update prices at any time in the [Mainlayer dashboard](https://dashboard.mainlayer.fr). Existing entitlements remain valid until they expire.
 
 ---
 
@@ -314,5 +314,5 @@ You can update prices at any time in the [Mainlayer dashboard](https://mainlayer
 
 ## Support
 
-- Mainlayer docs: [https://mainlayer.xyz/docs](https://mainlayer.xyz/docs)
+- Mainlayer docs: [https://docs.mainlayer.fr](https://docs.mainlayer.fr)
 - MCP specification: [https://modelcontextprotocol.io](https://modelcontextprotocol.io)

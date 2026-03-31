@@ -151,7 +151,7 @@ export async function handleMyTool(
 //   Price: 0.0050 USD per call
 //   Resource ID: res_xxxx
 //
-//   To pay, POST to: https://api.mainlayer.xyz/payments
+//   To pay, POST to: https://api.mainlayer.fr/payments
 //   ...
 //
 // After payment, retry the same call and the tool will execute.

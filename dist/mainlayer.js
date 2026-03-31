@@ -20,7 +20,7 @@ exports.PaymentRequiredError = void 0;
 exports.requirePayment = requirePayment;
 const axios_1 = __importDefault(require("axios"));
 const types_js_1 = require("@modelcontextprotocol/sdk/types.js");
-const MAINLAYER_API_BASE = 'https://api.mainlayer.xyz';
+const MAINLAYER_API_BASE = 'https://api.mainlayer.fr';
 // ---------------------------------------------------------------------------
 // Payment requirement error
 // ---------------------------------------------------------------------------

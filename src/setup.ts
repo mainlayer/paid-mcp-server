@@ -13,14 +13,14 @@
  *   npm run setup
  *
  * Prerequisites:
- *   - A Mainlayer account (https://mainlayer.xyz)
+ *   - A Mainlayer account (https://mainlayer.fr)
  *   - MAINLAYER_API_KEY set in .env
  */
 
 import 'dotenv/config';
 import axios, { AxiosError } from 'axios';
 
-const MAINLAYER_API_BASE = 'https://api.mainlayer.xyz';
+const MAINLAYER_API_BASE = 'https://api.mainlayer.fr';
 
 // ---------------------------------------------------------------------------
 // Resource definitions
@@ -95,7 +95,7 @@ async function setup() {
     console.error('');
     console.error('Steps to fix:');
     console.error('  1. Copy .env.example to .env');
-    console.error('  2. Get your API key at https://mainlayer.xyz/dashboard');
+    console.error('  2. Get your API key at https://dashboard.mainlayer.fr');
     console.error('  3. Set MAINLAYER_API_KEY=ml_your_key in .env');
     console.error('  4. Re-run: npm run setup');
     process.exit(1);
@@ -160,7 +160,7 @@ async function setup() {
       } else if (axiosErr.response?.status === 401) {
         console.error('FAILED (invalid API key)');
         console.error('\nYour MAINLAYER_API_KEY appears to be invalid.');
-        console.error('Get a valid key at: https://mainlayer.xyz/dashboard');
+        console.error('Get a valid key at: https://dashboard.mainlayer.fr');
         process.exit(1);
       } else {
         const message =
